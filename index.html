@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="ko">
 <head>
@@ -59,13 +60,13 @@
     .btn-no:hover { border-color: var(--ink2); color: var(--ink); }
 
     /* 진행 바 */
-    .progress-wrap { position: sticky; top: 0; z-index: 10; background: var(--bg); padding: 10px 0 14px; border-bottom: 1px solid var(--border); margin-bottom: 8px; display: none; }
+    .progress-wrap { position: sticky; top: 0; z-index: 10; background: var(--bg); padding: 10px 0 14px; border-bottom: 1px solid var(--border); margin-bottom: 8px; }
     .progress-bar-bg { height: 2px; background: var(--border); position: relative; }
     .progress-bar-fill { position: absolute; inset: 0; background: linear-gradient(90deg, var(--gold), var(--gold2)); transform-origin: left; transform: scaleX(0); transition: transform 0.3s ease; }
     .progress-text { font-size: 11px; letter-spacing: 1px; color: var(--ink2); text-align: right; margin-top: 6px; }
 
     /* 문항 구분선 */
-    .questions-header { display: none; align-items: center; gap: 18px; margin-bottom: 8px; }
+    .questions-header { display: flex; align-items: center; gap: 18px; margin-bottom: 8px; }
     .questions-header-line { flex: 1; height: 1px; background: var(--border); }
     .questions-header-text { font-size: 10px; letter-spacing: 4px; text-transform: uppercase; color: var(--gold); }
 
@@ -268,7 +269,8 @@
   </div>
 
   <div id="searchResponse"></div>
-  <div class="warning-bar" id="warningBox"></div>
+  <div class="warning-bar" id="searchWarningBox"></div>
+  <div class="warning-bar" id="answerWarningBox"></div>
 
   <!-- 진행 바 -->
   <div class="progress-wrap" id="progressWrap">
@@ -289,7 +291,7 @@
   <form id="questionForm" onsubmit="return false;"></form>
 
   <!-- 제출 버튼 -->
-  <div class="submit-wrap" style="display:none;" id="submitWrap">
+  <div class="submit-wrap" id="submitWrap">
     <button class="btn-submit" onclick="submitAnswers()">결과 보기</button>
   </div>
 
@@ -310,85 +312,30 @@
 
   let questions = [];
   let answers = {};
-  let currentResult = null;
   let adminPassword = null;
   let radarChart = null;
   let barChart = null;
 
-  // ── 페이지 로드 시 문항 불러오기 ──────────────────────────────────
+  // ── 페이지 로드 시 문항 즉시 표시 ──────────────────────────────────
   window.onload = () => {
     fetch(`${FN}/getQuestions`, { method: "POST" })
       .then(r => r.json())
       .then(data => {
         if (data.questions) {
           questions = data.questions;
+          renderQuestions();
         }
       })
-      .catch(e => console.error("문항 로드 오류:", e));
-  };
-
-  // ── 이전 검사 여부 확인 ─────────────────────────────────────────
-  async function searchPrevious() {
-    const name = document.getElementById("nameInput").value.trim();
-    if (!name) { showWarning("이름을 입력해주세요."); return; }
-
-    try {
-      const res = await fetch(`${FN}/loadPreviousResult`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ name })
+      .catch(e => {
+        console.error("문항 로드 오류:", e);
+        showWarning("searchWarningBox", "문항을 불러오는 중 오류가 발생했습니다.");
       });
-      const data = await res.json();
-
-      const box = document.getElementById("searchResponse");
-      if (data.found) {
-        box.innerHTML = `
-          <div class="confirm-box">
-            <p>이전에 검사를 완료하였습니다. 결과를 확인하시겠습니까?</p>
-            <div class="confirm-btns">
-              <button class="btn-yes" onclick="loadExistingResult()">예</button>
-              <button class="btn-no" onclick="startNewTest()">아니오 (새 검사)</button>
-            </div>
-          </div>`;
-        currentResult = data.result;
-      } else {
-        box.innerHTML = `
-          <div class="confirm-box">
-            <p>검사 기록이 없습니다. 새로운 검사를 시작하시겠습니까?</p>
-            <div class="confirm-btns">
-              <button class="btn-yes" onclick="startNewTest()">예</button>
-              <button class="btn-no" onclick="clearSearch()">취소</button>
-            </div>
-          </div>`;
-      }
-    } catch (e) {
-      console.error(e);
-      showWarning("검색 중 오류 발생");
-    }
-  }
-
-  function loadExistingResult() {
-    document.getElementById("searchResponse").innerHTML = "";
-    if (currentResult) displayResult(currentResult);
-  }
-
-  function startNewTest() {
-    document.getElementById("searchResponse").innerHTML = "";
-    renderQuestions();
-    document.getElementById("progressWrap").style.display = "block";
-    document.getElementById("questionsHeader").style.display = "flex";
-    document.getElementById("submitWrap").style.display = "block";
-  }
-
-  function clearSearch() {
-    document.getElementById("searchResponse").innerHTML = "";
-  }
+  };
 
   // ── 문항 렌더링 ──────────────────────────────────────────────────
   function renderQuestions() {
     const form = document.getElementById("questionForm");
     form.innerHTML = "";
-    answers = {};
 
     questions.forEach((q, idx) => {
       const div = document.createElement("div");
@@ -424,6 +371,10 @@
 
     answers[qid] = score;
     updateProgress();
+
+    // 미응답 하이라이트 제거
+    const qDiv = document.querySelector(`.question[data-id="${qid}"]`);
+    if (qDiv) qDiv.classList.remove("unanswered");
   }
 
   // ── 진행률 업데이트 ──────────────────────────────────────────────
@@ -436,21 +387,71 @@
     document.getElementById("progressText").innerText = `${answered}/${total}`;
   }
 
+  // ── 이전 검사 검색 ─────────────────────────────────────────────────
+  async function searchPrevious() {
+    const name = document.getElementById("nameInput").value.trim();
+    if (!name) {
+      showWarning("searchWarningBox", "이름을 입력해주세요.");
+      return;
+    }
+
+    try {
+      const res = await fetch(`${FN}/loadPreviousResult`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ name })
+      });
+      const data = await res.json();
+
+      const box = document.getElementById("searchResponse");
+      if (data.found) {
+        box.innerHTML = `
+          <div class="confirm-box">
+            <p>이전에 검사를 완료하였습니다. 결과를 확인하시겠습니까?</p>
+            <div class="confirm-btns">
+              <button class="btn-yes" onclick="loadExistingResult(${JSON.stringify(data.result).replace(/"/g, '&quot;')})">예</button>
+              <button class="btn-no" onclick="clearSearch()">아니오</button>
+            </div>
+          </div>`;
+      } else {
+        showWarning("searchWarningBox", "최근 3일 이내 검사 기록이 없습니다.");
+      }
+    } catch (e) {
+      console.error(e);
+      showWarning("searchWarningBox", "검색 중 오류가 발생했습니다.");
+    }
+  }
+
+  function loadExistingResult(result) {
+    document.getElementById("searchResponse").innerHTML = "";
+    displayResult(result);
+  }
+
+  function clearSearch() {
+    document.getElementById("searchResponse").innerHTML = "";
+  }
+
   // ── 제출 ─────────────────────────────────────────────────────────
   async function submitAnswers() {
     const name = document.getElementById("nameInput").value.trim();
-    if (!name) { showWarning("이름을 입력해주세요."); return; }
+
+    // 이름 체크
+    if (!name) {
+      showWarning("answerWarningBox", "이름을 입력해주세요.");
+      document.getElementById("nameInput").focus();
+      document.getElementById("nameInput").scrollIntoView({ behavior: "smooth", block: "center" });
+      return;
+    }
+
+    // 미응답 체크
     if (Object.keys(answers).length < questions.length) {
-      // 미응답 문항 하이라이트
       questions.forEach(q => {
         const div = document.querySelector(`.question[data-id="${q.id}"]`);
         if (!(q.id in answers)) {
           div.classList.add("unanswered");
-        } else {
-          div.classList.remove("unanswered");
         }
       });
-      showWarning("모든 문항에 응답해주세요.");
+      showWarning("answerWarningBox", "모든 문항에 응답해주세요.");
       document.querySelector(".question.unanswered").scrollIntoView({ behavior: "smooth", block: "center" });
       return;
     }
@@ -458,6 +459,8 @@
     document.getElementById("spinner").style.display = "block";
     document.getElementById("questionForm").style.display = "none";
     document.getElementById("submitWrap").style.display = "none";
+    document.getElementById("progressWrap").style.display = "none";
+    document.getElementById("questionsHeader").style.display = "none";
 
     try {
       const res = await fetch(`${FN}/saveAnswers`, {
@@ -471,7 +474,7 @@
     } catch (e) {
       console.error(e);
       document.getElementById("spinner").style.display = "none";
-      showWarning("제출 중 오류 발생");
+      showWarning("answerWarningBox", "제출 중 오류가 발생했습니다.");
     }
   }
 
@@ -599,11 +602,11 @@
   }
 
   // ── 경고 표시 ─────────────────────────────────────────────────────
-  function showWarning(msg) {
-    const box = document.getElementById("warningBox");
+  function showWarning(boxId, msg) {
+    const box = document.getElementById(boxId);
     box.innerText = msg;
     box.style.display = "block";
-    setTimeout(() => box.style.display = "none", 3000);
+    setTimeout(() => box.style.display = "none", 4000);
   }
 
   // ══════════════════════════════════════════════════════════════════════════════
