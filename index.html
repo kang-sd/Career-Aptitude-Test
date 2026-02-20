@@ -27,7 +27,7 @@
     /* 헤더 */
     .header { text-align: center; padding: 52px 0 44px; animation: fadeDown 0.8s ease both; }
     .header-eyebrow { font-size: 10px; letter-spacing: 5px; text-transform: uppercase; color: var(--gold); margin-bottom: 18px; }
-    .header h1 { font-family: 'Cormorant Garamond', serif; font-size: clamp(48px, 10vw, 84px); font-weight: 300; font-style: italic; color: var(--ink); line-height: 0.95; letter-spacing: -2px; cursor: pointer; }
+    .header h1 { font-family: 'Cormorant Garamond', serif; font-size: clamp(48px, 10vw, 84px); font-weight: 300; font-style: italic; color: var(--ink); line-height: 0.95; letter-spacing: -2px; }
     .header h1 span { color: var(--gold); }
     .header-rule { width: 50px; height: 1px; background: linear-gradient(90deg, transparent, var(--gold), transparent); margin: 22px auto 18px; }
     .header-sub { font-size: 13px; color: var(--ink2); }
@@ -58,32 +58,21 @@
     .btn-no { background: transparent; border: 1px solid var(--border); color: var(--ink2); font-family: 'Noto Serif KR', serif; font-size: 14px; padding: 11px 26px; cursor: pointer; transition: all 0.2s; }
     .btn-no:hover { border-color: var(--ink2); color: var(--ink); }
 
-    /* 경고 바 */
-    .warning-bar { background: #fff5f5; border-left: 3px solid #e05252; color: #b83232; padding: 12px 18px; font-size: 13px; margin: 12px 0; display: none; line-height: 1.6; }
-    .warning-bar.show { display: block; animation: shake 0.3s ease; }
-
-    /* 이름 입력 리마인더 */
-    #nameReminderBar { display: none; background: #fff8e1; border-left: 3px solid #ffc107; color: #7c5c00; padding: 10px 16px; font-size: 13px; margin-bottom: 10px; cursor: pointer; }
-    #nameReminderBar:hover { background: #fff3cd; }
-
     /* 진행 바 */
     .progress-wrap { position: sticky; top: 0; z-index: 10; background: var(--bg); padding: 10px 0 14px; border-bottom: 1px solid var(--border); margin-bottom: 8px; display: none; }
-    .progress-wrap.show { display: block; }
     .progress-bar-bg { height: 2px; background: var(--border); position: relative; }
     .progress-bar-fill { position: absolute; inset: 0; background: linear-gradient(90deg, var(--gold), var(--gold2)); transform-origin: left; transform: scaleX(0); transition: transform 0.3s ease; }
     .progress-text { font-size: 11px; letter-spacing: 1px; color: var(--ink2); text-align: right; margin-top: 6px; }
 
     /* 문항 구분선 */
     .questions-header { display: none; align-items: center; gap: 18px; margin-bottom: 8px; }
-    .questions-header.show { display: flex; }
     .questions-header-line { flex: 1; height: 1px; background: var(--border); }
     .questions-header-text { font-size: 10px; letter-spacing: 4px; text-transform: uppercase; color: var(--gold); }
 
     /* 문항 */
-    #questionsForm { animation: fadeUp 0.8s 0.4s ease both; }
-    .question { border-bottom: 1px solid var(--border); padding: 24px 0; transition: background 0.2s; }
+    #careerForm { animation: fadeUp 0.8s 0.4s ease both; }
+    .question { border-bottom: 1px solid var(--border); padding: 24px 0; }
     .question:last-child { border-bottom: none; }
-    .question.unanswered { background: #fff8f8; }
     .q-meta { display: flex; align-items: baseline; gap: 12px; margin-bottom: 14px; }
     .q-num { font-family: 'Cormorant Garamond', serif; font-size: 13px; color: var(--gold); min-width: 28px; opacity: 0.6; }
     .q-text { font-size: 15px; color: var(--ink); line-height: 1.65; }
@@ -92,512 +81,660 @@
     .btn-choice:hover { border-color: var(--gold2); color: var(--ink); background: var(--gold-bg); }
     .btn-choice.selected { background: var(--gold); border-color: var(--gold); color: #fff; font-weight: 600; }
 
+    /* 미응답 하이라이트 */
+    .question.unanswered { background: #fff5f5; border-left: 3px solid #e05252; padding-left: 14px; margin-left: -17px; }
+    .question.unanswered .q-num { color: #e05252; opacity: 1; }
+
+    /* 경고 */
+    .warning-bar { background: #fff5f5; border-left: 3px solid #e05252; color: #b83232; padding: 12px 18px; font-size: 13px; margin: 12px 0; display: none; line-height: 1.6; }
+
+    /* 제출 버튼 */
+    .submit-wrap { padding: 40px 0 0; text-align: center; }
+    .btn-submit { background: var(--gold); border: none; color: #fff; font-family: 'Cormorant Garamond', serif; font-size: 18px; letter-spacing: 3px; padding: 18px 60px; cursor: pointer; width: 100%; max-width: 380px; transition: background 0.25s, transform 0.15s; }
+    .btn-submit:hover { background: var(--accent); transform: translateY(-1px); }
+    .btn-submit:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
+
     /* 스피너 */
     #spinner { display: none; text-align: center; padding: 60px 0; }
-    #spinner.show { display: block; }
     .spinner-ring { width: 44px; height: 44px; border: 2px solid var(--border); border-top-color: var(--gold); border-radius: 50%; animation: spin 0.9s linear infinite; margin: 0 auto 14px; }
     .spinner-text { font-size: 12px; letter-spacing: 2px; color: var(--ink2); text-transform: uppercase; }
 
-    /* 제출 버튼 */
-    .submit-wrap { padding: 40px 0 0; text-align: center; display: none; }
-    .submit-wrap.show { display: block; }
-    .btn-submit { background: var(--gold); border: none; color: #fff; font-family: 'Cormorant Garamond', serif; font-size: 18px; letter-spacing: 3px; padding: 18px 60px; cursor: pointer; width: 100%; max-width: 380px; transition: background 0.25s, transform 0.15s; }
-    .btn-submit:hover { background: var(--accent); transform: translateY(-1px); }
-
     /* 결과 섹션 */
     #resultSection { display: none; animation: fadeUp 0.7s ease both; }
-    #resultSection.show { display: block; }
     .result-header { text-align: center; padding: 56px 0 44px; border-bottom: 1px solid var(--border); margin-bottom: 44px; }
-    .result-header h2 { font-family: 'Cormorant Garamond', serif; font-size: 52px; font-weight: 300; font-style: italic; color: var(--ink); }
-    .result-header h2 span { color: var(--gold); }
-    .result-header-rule { width: 80px; height: 1px; background: linear-gradient(90deg, transparent, var(--gold), transparent); margin: 18px auto; }
-    .result-name { font-size: 16px; color: var(--ink2); }
+    .result-eyebrow { font-size: 10px; letter-spacing: 5px; text-transform: uppercase; color: var(--gold); margin-bottom: 22px; }
+    .result-types { display: flex; gap: 16px; justify-content: center; flex-wrap: wrap; margin-bottom: 20px; }
+    .type-badge { text-align: center; }
+    .type-rank { font-family: 'Cormorant Garamond', serif; font-size: 11px; color: var(--gold); opacity: 0.7; margin-bottom: 6px; letter-spacing: 2px; }
+    .type-name { font-family: 'Cormorant Garamond', serif; font-size: clamp(18px,4vw,28px); font-weight: 300; color: var(--ink); }
+    .type-name.rank1 { font-size: clamp(26px,6vw,40px); color: var(--gold); font-style: italic; }
+    .type-score { font-size: 11px; color: var(--ink2); margin-top: 4px; letter-spacing: 1px; }
+    .result-divider { width: 1px; height: 50px; background: var(--border); margin: auto 8px; }
+    .result-subtitle { font-size: 13px; color: var(--ink2); font-style: italic; line-height: 1.8; }
 
-    .chart-box { background: var(--surface); border: 1px solid var(--border); padding: 36px 28px; margin-bottom: 32px; }
-    .chart-title { font-size: 11px; letter-spacing: 3px; text-transform: uppercase; color: var(--gold); text-align: center; margin-bottom: 24px; }
+    /* 차트 */
+    .chart-section { background: var(--surface); border: 1px solid var(--border); padding: 28px 28px 24px; margin-bottom: 40px; }
+    .chart-title { font-size: 10px; letter-spacing: 4px; text-transform: uppercase; color: var(--gold); margin-bottom: 20px; text-align: center; }
 
-    .type-list { display: grid; gap: 14px; margin-bottom: 32px; }
-    .type-item { background: var(--surface); border: 1px solid var(--border); padding: 22px; }
-    .type-item.top { border-color: var(--gold); background: var(--gold-bg); }
-    .type-item-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
-    .type-item-name { font-size: 16px; font-weight: 600; color: var(--ink); }
-    .type-item.top .type-item-name { color: var(--gold); }
-    .type-item-score { font-family: 'Cormorant Garamond', serif; font-size: 24px; color: var(--ink2); }
-    .type-item.top .type-item-score { color: var(--gold); }
-    .type-item-desc { font-size: 14px; color: var(--ink2); line-height: 1.6; margin-top: 8px; }
+    /* 점수 바 */
+    .score-table-wrap { margin-bottom: 40px; border: 1px solid var(--border); background: var(--surface); overflow: hidden; }
+    .score-table-title { font-size: 10px; letter-spacing: 4px; text-transform: uppercase; color: var(--gold); padding: 16px 20px 12px; border-bottom: 1px solid var(--border); background: var(--gold-bg); }
+    .score-row { display: grid; grid-template-columns: 140px 1fr 50px; align-items: center; gap: 16px; padding: 12px 20px; border-bottom: 1px solid var(--border); }
+    .score-row:last-child { border-bottom: none; }
+    .score-row.rank1 { background: rgba(184,144,58,0.05); }
+    .score-row.rank1 .score-type { color: var(--gold); font-weight: 600; }
+    .score-type { font-size: 13px; color: var(--ink2); }
+    .score-bar-bg { height: 4px; background: var(--border); border-radius: 2px; position: relative; overflow: hidden; }
+    .score-bar-fill { position: absolute; left: 0; top: 0; height: 100%; border-radius: 2px; background: linear-gradient(90deg, var(--gold), var(--gold2)); transition: width 1s ease; }
+    .score-val { font-family: 'Cormorant Garamond', serif; font-size: 20px; color: var(--ink); text-align: right; }
+    .score-val.rank1 { color: var(--gold); }
 
-    .result-btns { display: flex; gap: 12px; justify-content: center; }
-    .btn-restart { background: var(--gold); border: none; color: #fff; font-family: 'Noto Serif KR', serif; font-size: 15px; padding: 14px 32px; cursor: pointer; transition: opacity 0.2s; }
-    .btn-restart:hover { opacity: 0.85; }
+    /* 결과 상세 */
+    .result-fields { border: 1px solid var(--border); margin-bottom: 40px; background: var(--surface); }
+    .field-section-title { font-size: 10px; letter-spacing: 4px; text-transform: uppercase; color: var(--gold); padding: 16px 20px 12px; border-bottom: 1px solid var(--border); background: var(--gold-bg); }
+    .field-row { display: grid; grid-template-columns: 130px 1fr; border-bottom: 1px solid var(--border); }
+    .field-row:last-child { border-bottom: none; }
+    .field-key { padding: 18px 16px 18px 20px; font-size: 10px; letter-spacing: 2px; text-transform: uppercase; color: var(--gold); background: var(--gold-bg); border-right: 1px solid var(--border); display: flex; align-items: flex-start; padding-top: 18px; line-height: 1.6; }
+    .field-val { padding: 16px 20px; font-size: 14px; color: var(--ink2); line-height: 1.85; }
 
-    /* 관리자 */
-    .admin-modal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.85); z-index: 9999; overflow-y: auto; padding: 40px 20px; }
-    .admin-modal.show { display: block; }
-    .admin-content { max-width: 900px; margin: 0 auto; background: var(--bg); padding: 32px; }
-    .admin-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; }
-    .admin-header h3 { font-family: 'Cormorant Garamond', serif; font-size: 36px; color: var(--gold); }
-    .btn-close { background: var(--ink); border: none; color: #fff; padding: 10px 20px; cursor: pointer; }
-    .admin-table { width: 100%; border-collapse: collapse; }
-    .admin-table th { background: var(--gold); color: #fff; padding: 12px; text-align: left; font-size: 13px; }
-    .admin-table td { border-bottom: 1px solid var(--border); padding: 12px; font-size: 13px; }
-    .admin-table .expired { opacity: 0.4; }
-    .btn-delete { background: #d9534f; border: none; color: #fff; padding: 6px 14px; cursor: pointer; font-size: 12px; }
+    /* 버튼 */
+    .result-actions { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
+    .btn-print { background: var(--gold); border: none; color: #fff; font-family: 'Noto Serif KR', serif; font-size: 15px; padding: 16px 36px; cursor: pointer; transition: background 0.2s, transform 0.15s; display: flex; align-items: center; gap: 8px; }
+    .btn-print:hover { background: var(--accent); transform: translateY(-1px); }
+    .btn-restart { background: var(--surface); border: 1px solid var(--border); color: var(--ink2); font-family: 'Noto Serif KR', serif; font-size: 15px; padding: 16px 36px; cursor: pointer; transition: all 0.2s; }
+    .btn-restart:hover { border-color: var(--ink); color: var(--ink); }
+
+    /* 관리자 모달 */
+    .modal-overlay { position: fixed; inset: 0; background: rgba(26,22,18,0.75); z-index: 1000; display: none; align-items: center; justify-content: center; }
+    .modal-overlay.open { display: flex; }
+    .modal { background: var(--surface); width: 100%; max-width: 560px; max-height: 90vh; overflow-y: auto; border-top: 3px solid var(--gold); animation: fadeUp 0.3s ease; }
+    .modal-header { padding: 28px 28px 20px; border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; }
+    .modal-title { font-family: 'Cormorant Garamond', serif; font-size: 22px; font-weight: 300; color: var(--ink); letter-spacing: 1px; }
+    .modal-close { background: none; border: none; font-size: 22px; color: var(--ink2); cursor: pointer; padding: 4px 8px; line-height: 1; }
+    .modal-close:hover { color: var(--ink); }
+    .modal-body { padding: 24px 28px; }
+    .pw-form { display: flex; flex-direction: column; gap: 14px; }
+    .pw-input { background: var(--bg); border: 1px solid var(--border); color: var(--ink); font-family: 'Noto Serif KR', serif; font-size: 20px; padding: 14px 18px; outline: none; text-align: center; letter-spacing: 10px; transition: border-color 0.25s; }
+    .pw-input:focus { border-color: var(--gold); }
+    .btn-pw-ok { background: var(--gold); border: none; color: #fff; font-family: 'Cormorant Garamond', serif; font-size: 16px; letter-spacing: 2px; padding: 14px; cursor: pointer; transition: background 0.2s; }
+    .btn-pw-ok:hover { background: var(--accent); }
+    .pw-error { color: #c0392b; font-size: 13px; text-align: center; display: none; }
+    .admin-toolbar { display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px; flex-wrap: wrap; gap: 10px; }
+    .admin-count { font-size: 12px; color: var(--ink2); letter-spacing: 1px; }
+    .btn-admin-refresh { background: none; border: 1px solid var(--border); color: var(--ink2); font-family: 'Noto Serif KR', serif; font-size: 13px; padding: 7px 16px; cursor: pointer; transition: all 0.2s; }
+    .btn-admin-refresh:hover { border-color: var(--gold); color: var(--gold); }
+    .admin-list { display: flex; flex-direction: column; gap: 8px; }
+    .admin-item { display: grid; grid-template-columns: 1fr auto auto; align-items: center; gap: 12px; padding: 14px 16px; background: var(--bg); border: 1px solid var(--border); }
+    .admin-item.expired { opacity: 0.5; border-style: dashed; }
+    .admin-item-name { font-size: 15px; color: var(--ink); margin-bottom: 3px; }
+    .admin-item-time { font-size: 11px; color: var(--ink2); }
+    .admin-item-type { font-family: 'Cormorant Garamond', serif; font-size: 13px; color: var(--gold); margin-top: 2px; }
+    .admin-item-badge { font-size: 10px; letter-spacing: 1px; padding: 3px 8px; border: 1px solid; margin-left: 8px; }
+    .badge-active  { color: var(--gold); border-color: var(--gold); background: var(--gold-bg); }
+    .badge-expired { color: #999; border-color: #ccc; background: #f5f5f5; }
+    .btn-view-result { background: none; border: 1px solid var(--gold); color: var(--gold); font-family: 'Noto Serif KR', serif; font-size: 12px; padding: 6px 14px; cursor: pointer; transition: all 0.2s; white-space: nowrap; }
+    .btn-view-result:hover { background: var(--gold); color: #fff; }
+    .btn-del { background: none; border: 1px solid var(--border); color: #c0392b; font-family: 'Noto Serif KR', serif; font-size: 12px; padding: 6px 14px; cursor: pointer; transition: all 0.2s; white-space: nowrap; }
+    .btn-del:hover { background: #fdf0ee; border-color: #c0392b; }
+    .admin-empty { text-align: center; color: var(--ink2); font-size: 14px; padding: 40px 0; font-style: italic; }
 
     /* 애니메이션 */
-    @keyframes fadeDown { from { opacity: 0; transform: translateY(-20px); } to { opacity: 1; transform: translateY(0); } }
-    @keyframes fadeUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
-    @keyframes spin { to { transform: rotate(360deg); } }
-    @keyframes shake { 0%, 100% { transform: translateX(0); } 25% { transform: translateX(-5px); } 75% { transform: translateX(5px); } }
+    @keyframes fadeDown { from { opacity:0; transform:translateY(-16px); } to { opacity:1; transform:translateY(0); } }
+    @keyframes fadeUp   { from { opacity:0; transform:translateY(16px);  } to { opacity:1; transform:translateY(0); } }
+    @keyframes spin     { to { transform: rotate(360deg); } }
 
-    .hidden { display: none !important; }
+    /* 인쇄 */
+    @media print {
+      .top-bar,.header,.intro-cards,.name-section,
+      .progress-wrap,.questions-header,#careerForm,
+      .warning-bar,.submit-wrap,#spinner,
+      #searchResponse,#searchWarningBox,#answerWarningBox,
+      .result-actions,.modal-overlay { display: none !important; }
+      body { background:#fff !important; -webkit-print-color-adjust:exact; print-color-adjust:exact; }
+      .container { max-width:100%; padding:0 16px; }
+      #resultSection { display:block !important; }
+      .print-only-header { display:flex !important; justify-content:space-between; align-items:center; padding:12px 0; border-bottom:2px solid #b8903a; margin-bottom:0; }
+      .print-only-header .brand { font-family:'Cormorant Garamond',serif; font-size:18pt; font-style:italic; color:#b8903a; }
+      .print-only-header .print-date { font-size:9pt; color:#888; }
+    }
 
-    @media (max-width: 640px) {
-      .intro-cards { grid-template-columns: repeat(2, 1fr); }
-      .q-choices { flex-direction: column; padding-left: 0; }
-      .result-btns { flex-direction: column; }
+    /* 반응형 */
+    @media (max-width: 600px) {
+      .intro-cards { grid-template-columns: repeat(2,1fr); }
+      .q-choices { padding-left:0; flex-direction:column; }
+      .btn-choice { width:100%; }
+      .field-row { grid-template-columns:1fr; }
+      .field-key { border-right:none; border-bottom:1px solid var(--border); }
+      .result-divider { display:none; }
+      .score-row { grid-template-columns: 100px 1fr 40px; gap:10px; }
+      .admin-item { grid-template-columns: 1fr; }
     }
   </style>
 </head>
 <body>
-  <div class="top-bar"></div>
 
-  <!-- 관리자 모달 -->
-  <div class="admin-modal" id="adminModal">
-    <div class="admin-content">
-      <div class="admin-header">
-        <h3>관리자 모드</h3>
-        <button class="btn-close" onclick="closeAdmin()">닫기</button>
-      </div>
-      <div id="adminList"></div>
+<!-- 관리자 모달 -->
+<div class="modal-overlay" id="adminOverlay">
+  <div class="modal">
+    <div class="modal-header">
+      <div class="modal-title" id="modalTitle">관리자 인증</div>
+      <button class="modal-close" onclick="closeAdmin()">✕</button>
     </div>
-  </div>
-
-  <div class="container">
-    <!-- 헤더 -->
-    <div class="header">
-      <div class="header-eyebrow">Holland Code Assessment</div>
-      <h1 onclick="adminClick()">Career<span>.</span></h1>
-      <div class="header-rule"></div>
-      <div class="header-sub">진로 · 직업 성향 분석</div>
-    </div>
-
-    <!-- 안내 카드 -->
-    <div class="intro-cards">
-      <div class="intro-card">
-        <div class="intro-card-num">60</div>
-        <div class="intro-card-title">Questions</div>
-        <p>6가지 유형을<br>탐색합니다</p>
+    <div class="modal-body">
+      <div id="pwPanel">
+        <div class="pw-form">
+          <input class="pw-input" type="password" id="pwInput" placeholder="●●●●" maxlength="20"
+            onkeydown="if(event.key==='Enter') doAdminLogin()">
+          <button class="btn-pw-ok" onclick="doAdminLogin()">확인</button>
+          <div class="pw-error" id="pwError">비밀번호가 올바르지 않습니다.</div>
+        </div>
       </div>
-      <div class="intro-card">
-        <div class="intro-card-num">10</div>
-        <div class="intro-card-title">Per Type</div>
-        <p>유형당 10개<br>문항 배치</p>
-      </div>
-      <div class="intro-card">
-        <div class="intro-card-num">5</div>
-        <div class="intro-card-title">Scale</div>
-        <p>5점 척도로<br>측정합니다</p>
-      </div>
-      <div class="intro-card">
-        <div class="intro-card-num">3</div>
-        <div class="intro-card-title">Days</div>
-        <p>이름 검색으로<br>3일 내 재확인 가능</p>
-      </div>
-    </div>
-
-    <!-- 이름 입력 -->
-    <div class="name-section">
-      <div class="section-label">이름 입력</div>
-      <div class="name-row">
-        <input type="text" id="nameInput" class="name-input" placeholder="성함을 입력하세요" autocomplete="off">
-        <button class="btn-search" onclick="searchPrevious()">검색</button>
-      </div>
-    </div>
-
-    <div class="warning-bar" id="searchWarningBox"></div>
-    <div id="searchResponse"></div>
-
-    <!-- 스피너 -->
-    <div id="spinner">
-      <div class="spinner-ring"></div>
-      <div class="spinner-text">문항 불러오는 중</div>
-    </div>
-
-    <!-- 진행 바 -->
-    <div class="progress-wrap" id="progressWrap">
-      <div id="nameReminderBar" onclick="scrollToName()">
-        ✏️ 성함을 입력해주세요 — 여기를 클릭하면 입력란으로 이동합니다
-      </div>
-      <div class="progress-bar-bg">
-        <div class="progress-bar-fill" id="progressFill"></div>
-      </div>
-      <div class="progress-text" id="progressText">0 / 60</div>
-    </div>
-
-    <!-- 문항 구분선 -->
-    <div class="questions-header" id="questionsHeader">
-      <div class="questions-header-line"></div>
-      <div class="questions-header-text">검사 문항</div>
-      <div class="questions-header-line"></div>
-    </div>
-
-    <!-- 문항 폼 -->
-    <form id="questionsForm"></form>
-
-    <div class="warning-bar" id="answerWarningBox"></div>
-
-    <div class="submit-wrap" id="submitWrap">
-      <button class="btn-submit" onclick="submitAnswers()">결과 보기</button>
-    </div>
-
-    <!-- 결과 섹션 -->
-    <div id="resultSection">
-      <div class="result-header">
-        <h2>Your<br><span>Result</span></h2>
-        <div class="result-header-rule"></div>
-        <div class="result-name" id="resultName"></div>
-      </div>
-
-      <div class="chart-box">
-        <div class="chart-title">Type Distribution</div>
-        <canvas id="resultChart"></canvas>
-      </div>
-
-      <div class="type-list" id="typeList"></div>
-
-      <div class="result-btns">
-        <button class="btn-restart" onclick="location.reload()">처음으로 돌아가기</button>
+      <div id="listPanel" style="display:none;">
+        <div class="admin-toolbar">
+          <div class="admin-count" id="adminCount"></div>
+          <button class="btn-admin-refresh" onclick="loadAdminList()">↻ 새로고침</button>
+        </div>
+        <div class="admin-list" id="adminList"></div>
       </div>
     </div>
   </div>
+</div>
 
-  <script>
-    // ⭐ Firebase Functions URL
-    const FN = "https://us-central1-career-aptitude-test-b7b2c.cloudfunctions.net";
+<div class="top-bar"></div>
+<div class="container">
 
-    let questions = [];
-    let answers = {};
-    let lastSearchResult = null;
-    let chartInst = null;
+  <div class="print-only-header" style="display:none;">
+    <div class="brand">Career · 진로직업분석</div>
+    <div class="print-date" id="printDate"></div>
+  </div>
 
-    // API 호출
-    async function api(endpoint, body = null) {
-      const options = body ? {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(body)
-      } : {};
-      const res = await fetch(`${FN}/${endpoint}`, options);
-      if (!res.ok) throw new Error(`API 오류: ${res.status}`);
-      return res.json();
+  <!-- 헤더 -->
+  <div class="header">
+    <div class="header-eyebrow">진로 · 직업 성향 정밀 분석</div>
+    <h1 id="mainLogo" onclick="openAdmin()" style="cursor:default;">Car<span>eer</span></h1>
+    <div class="header-rule"></div>
+    <div class="header-sub">당신에게 맞는 직업 성향을 발견하다</div>
+  </div>
+
+  <!-- 안내 카드 -->
+  <div class="intro-cards">
+    <div class="intro-card">
+      <div class="intro-card-num">60</div>
+      <div class="intro-card-title">문항 구성</div>
+      <p>정밀한 결과를 위해<br>설계된 60개 문항</p>
+    </div>
+    <div class="intro-card">
+      <div class="intro-card-num">6</div>
+      <div class="intro-card-title">성향 유형</div>
+      <p>직업 성향별<br>심층 분석 및 조언</p>
+    </div>
+    <div class="intro-card">
+      <div class="intro-card-num">3</div>
+      <div class="intro-card-title">일 보관</div>
+      <p>이름 검색으로<br>3일 이내 재확인 가능</p>
+    </div>
+    <div class="intro-card">
+      <div class="intro-card-num">∞</div>
+      <div class="intro-card-title">시각화</div>
+      <p>6가지 점수를<br>그래프로 한눈에</p>
+    </div>
+  </div>
+
+  <!-- 이름 입력 -->
+  <div class="name-section">
+    <div class="section-label">이름 입력</div>
+    <div class="name-row">
+      <input class="name-input" type="text" id="nameInput" placeholder="성함을 입력하세요" autocomplete="off">
+      <button class="btn-search" onclick="searchPrevious()">검색</button>
+    </div>
+  </div>
+
+  <div class="warning-bar" id="searchWarningBox"></div>
+  <div id="searchResponse"></div>
+
+  <!-- 스피너 -->
+  <div id="spinner">
+    <div class="spinner-ring"></div>
+    <div class="spinner-text">문항 불러오는 중</div>
+  </div>
+
+  <!-- 진행 바 -->
+  <div class="progress-wrap" id="progressWrap">
+    <div id="nameReminderBar" style="display:none; background:#fff8e1; border-left:3px solid #ffc107; color:#7c5c00; padding:8px 14px; font-size:13px; margin-bottom:8px; cursor:pointer;"
+      onclick="document.getElementById('nameInput').focus(); document.querySelector('.name-section').scrollIntoView({behavior:'smooth'});">
+      ✏️ 성함을 입력해주세요 — 여기를 클릭하면 입력란으로 이동합니다
+    </div>
+    <div class="progress-bar-bg">
+      <div class="progress-bar-fill" id="progressFill"></div>
+    </div>
+    <div class="progress-text" id="progressText">0 / 60</div>
+  </div>
+
+  <!-- 문항 구분선 -->
+  <div class="questions-header" id="questionsHeader">
+    <div class="questions-header-line"></div>
+    <div class="questions-header-text">검사 문항</div>
+    <div class="questions-header-line"></div>
+  </div>
+
+  <!-- 문항 폼 -->
+  <form id="careerForm"></form>
+
+  <div class="warning-bar" id="answerWarningBox"></div>
+
+  <div class="submit-wrap" id="submitWrap">
+    <button class="btn-submit" id="submitBtn" onclick="submitAnswers()">결과 보기</button>
+  </div>
+
+  <!-- 결과 섹션 -->
+  <div id="resultSection">
+    <div class="result-header">
+      <div class="result-eyebrow">당신의 진로직업 성향 프로필</div>
+      <div class="result-types" id="typesDisplay"></div>
+      <div class="result-subtitle" id="resultSubtitle"></div>
+    </div>
+
+    <div class="chart-section">
+      <div class="chart-title">성향 유형별 점수 비교</div>
+      <canvas id="careerChart"></canvas>
+    </div>
+
+    <div class="score-table-wrap">
+      <div class="score-table-title">전체 유형 점수</div>
+      <div id="scoreRows"></div>
+    </div>
+
+    <div class="result-fields" id="resultFields"></div>
+
+    <div class="result-actions">
+      <button class="btn-print" onclick="window.print()">🖨️ 인쇄 / PDF 저장</button>
+      <button class="btn-restart" onclick="location.reload()">처음으로 돌아가기</button>
+    </div>
+  </div>
+
+</div>
+
+<script>
+const FN = "https://us-central1-career-aptitude-test.cloudfunctions.net";
+let questionData = [], answers = {}, lastSearchResult = null, chartInst = null;
+let adminPassword = null;
+
+async function api(endpoint, body = {}) {
+  const r = await fetch(`${FN}/${endpoint}`, {
+    method: "POST", headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(body)
+  });
+  const d = await r.json();
+  if (!r.ok) throw new Error(d.error || "서버 오류");
+  return d;
+}
+
+function showWarning(id, msg) {
+  const el = document.getElementById(id);
+  el.textContent = msg; el.style.display = "block";
+  setTimeout(() => el.style.display = "none", 5000);
+}
+
+// ── 관리자 모달 ──────────────────────────────────────────────
+document.getElementById("adminOverlay").addEventListener("click", e => {
+  if (e.target === document.getElementById("adminOverlay")) closeAdmin();
+});
+
+function openAdmin() {
+  document.getElementById("adminOverlay").classList.add("open");
+  document.getElementById("modalTitle").textContent = "관리자 인증";
+  document.getElementById("pwPanel").style.display   = "block";
+  document.getElementById("listPanel").style.display = "none";
+  document.getElementById("pwInput").value = "";
+  document.getElementById("pwError").style.display = "none";
+  setTimeout(() => document.getElementById("pwInput").focus(), 100);
+}
+function closeAdmin() {
+  document.getElementById("adminOverlay").classList.remove("open");
+}
+
+async function doAdminLogin() {
+  const pw = document.getElementById("pwInput").value.trim();
+  if (!pw) return;
+  try {
+    const data = await api("adminLogin", { password: pw });
+    if (data.ok) {
+      adminPassword = pw;
+      document.getElementById("pwError").style.display = "none";
+      document.getElementById("modalTitle").textContent = "관리자 · 응답 목록";
+      document.getElementById("pwPanel").style.display   = "none";
+      document.getElementById("listPanel").style.display = "block";
+      loadAdminList();
+    } else {
+      document.getElementById("pwError").style.display = "block";
+      document.getElementById("pwInput").value = "";
+      document.getElementById("pwInput").focus();
     }
+  } catch(e) {
+    document.getElementById("pwError").textContent = "오류: " + e.message;
+    document.getElementById("pwError").style.display = "block";
+  }
+}
 
-    // 경고 표시
-    function showWarning(id, msg) {
-      const el = document.getElementById(id);
-      el.textContent = msg;
-      el.classList.add('show');
-      el.scrollIntoView({ behavior: 'smooth', block: 'center' });
-      setTimeout(() => el.classList.remove('show'), 4000);
+async function loadAdminList() {
+  const listEl  = document.getElementById("adminList");
+  const countEl = document.getElementById("adminCount");
+  listEl.innerHTML = `<div style="text-align:center;padding:30px;color:var(--ink2);font-size:13px;">불러오는 중…</div>`;
+  try {
+    const data = await api("adminGetResults", { password: adminPassword });
+    const results = data.results || [];
+    const active  = results.filter(r => !r.expired).length;
+    countEl.textContent = `전체 ${results.length}건 · 유효 ${active}건`;
+    if (!results.length) {
+      listEl.innerHTML = `<div class="admin-empty">응답 데이터가 없습니다.</div>`;
+      return;
     }
-
-    // 이름 입력란으로 스크롤
-    function scrollToName() {
-      document.getElementById('nameInput').focus();
-      document.querySelector('.name-section').scrollIntoView({ behavior: 'smooth' });
-    }
-
-    // 페이지 로드 시 바로 문항 로드
-    window.onload = async () => {
-      // 이름 입력 시 리마인더 숨김
-      document.getElementById('nameInput').addEventListener('input', () => {
-        if (document.getElementById('nameInput').value.trim()) {
-          document.getElementById('nameReminderBar').style.display = 'none';
-        }
-      });
-
-      // 문항 로드
-      document.getElementById('spinner').classList.add('show');
-      try {
-        const data = await api("getQuestions");
-        questions = data.questions;
-        renderQuestions();
-      } catch (e) {
-        alert("문항 로드 실패: " + e.message);
-      } finally {
-        document.getElementById('spinner').classList.remove('show');
-      }
-    };
-
-    // 문항 렌더링
-    function renderQuestions() {
-      const form = document.getElementById('questionsForm');
-      form.innerHTML = '';
-      
-      questions.forEach((q, i) => {
-        const div = document.createElement('div');
-        div.className = 'question';
-        div.setAttribute('data-qid', q.id);
-        div.innerHTML = `
-          <div class="q-meta">
-            <div class="q-num">${String(i + 1).padStart(2, '0')}</div>
-            <div class="q-text">${q.text}</div>
+    listEl.innerHTML = results.map(r => {
+      const dt = r.time ? new Date(r.time) : null;
+      const dtStr = dt
+        ? `${dt.getFullYear()}.${String(dt.getMonth()+1).padStart(2,"0")}.${String(dt.getDate()).padStart(2,"0")} ${String(dt.getHours()).padStart(2,"0")}:${String(dt.getMinutes()).padStart(2,"0")}`
+        : "–";
+      const badge = r.expired
+        ? `<span class="admin-item-badge badge-expired">만료</span>`
+        : `<span class="admin-item-badge badge-active">유효</span>`;
+      return `
+        <div class="admin-item${r.expired?" expired":""}" id="item-${r.id}">
+          <div>
+            <div class="admin-item-name">${r.name} ${badge}</div>
+            <div class="admin-item-time">${dtStr}</div>
+            <div class="admin-item-type">${r.firstType||"–"} (${r.firstScore||0}점)</div>
           </div>
-          <div class="q-choices">
-            <button type="button" class="btn-choice" onclick="selectAnswer('${q.id}', 1, this)">${q.select1}</button>
-            <button type="button" class="btn-choice" onclick="selectAnswer('${q.id}', 2, this)">${q.select2}</button>
-            <button type="button" class="btn-choice" onclick="selectAnswer('${q.id}', 3, this)">${q.select3}</button>
-            <button type="button" class="btn-choice" onclick="selectAnswer('${q.id}', 4, this)">${q.select4}</button>
-            <button type="button" class="btn-choice" onclick="selectAnswer('${q.id}', 5, this)">${q.select5}</button>
-          </div>
-        `;
-        form.appendChild(div);
-      });
+          <button class="btn-view-result" onclick="adminViewResult('${r.id}')">결과 보기</button>
+          <button class="btn-del" onclick="adminDelete('${r.id}','${r.name}')">삭제</button>
+        </div>`;
+    }).join("");
+  } catch(e) {
+    listEl.innerHTML = `<div style="color:#c0392b;font-size:13px;padding:20px;">오류: ${e.message}</div>`;
+  }
+}
 
-      // UI 표시
-      document.getElementById('progressWrap').classList.add('show');
-      document.getElementById('questionsHeader').classList.add('show');
-      document.getElementById('submitWrap').classList.add('show');
-      updateProgress();
+// 관리자 결과보기 - 서버에서 해설 포함 전체 결과 받기
+async function adminViewResult(docId) {
+  try {
+    const result = await api("getResultById", { docId });
+    closeAdmin();
+    renderResult(result);
+  } catch(e) { alert("오류: " + e.message); }
+}
+
+async function adminDelete(docId, name) {
+  if (!confirm(`"${name}"의 결과를 삭제하시겠습니까?`)) return;
+  try {
+    await api("adminDeleteResult", { password: adminPassword, docId });
+    document.getElementById(`item-${docId}`)?.remove();
+    const remaining = document.querySelectorAll(".admin-item").length;
+    const active    = document.querySelectorAll(".admin-item:not(.expired)").length;
+    document.getElementById("adminCount").textContent = `전체 ${remaining}건 · 유효 ${active}건`;
+  } catch(e) { alert("삭제 실패: " + e.message); }
+}
+
+// ── 페이지 로드 → 문항 불러오기 ──────────────────────────────
+window.onload = async () => {
+  // 이름 입력 시 reminder 즉시 숨김
+  document.getElementById("nameInput").addEventListener("input", () => {
+    if (document.getElementById("nameInput").value.trim()) {
+      document.getElementById("nameReminderBar").style.display = "none";
     }
+  });
 
-    // 답변 선택
-    function selectAnswer(qid, score, btn) {
-      answers[qid] = score;
-      
-      // 같은 문항의 다른 버튼 선택 해제
-      btn.closest('.q-choices').querySelectorAll('.btn-choice').forEach(b => 
-        b.classList.remove('selected')
-      );
-      btn.classList.add('selected');
-      btn.closest('.question').classList.remove('unanswered');
-      
-      updateProgress();
+  document.getElementById("spinner").style.display    = "block";
+  document.getElementById("careerForm").style.display = "none";
+  document.getElementById("submitWrap").style.display = "none";
+  let loadOk = false;
+  try {
+    const data = await api("getQuestions", {});
+    const qs = data.questions || [];
+    if (qs.length === 0) throw new Error("문항 데이터가 없습니다. Firestore '문항시트' 컬렉션을 확인하세요.");
+    renderQuestions(qs);
+    loadOk = true;
+  } catch(e) {
+    document.getElementById("spinner").style.display = "none";
+    document.getElementById("careerForm").innerHTML =
+      `<div style="text-align:center;padding:60px 0;color:#c0392b;font-size:14px;line-height:2;">
+        ⚠️ 문항을 불러오지 못했습니다.<br>
+        <span style="font-size:12px;color:#999;">${e.message}</span>
+      </div>`;
+    document.getElementById("careerForm").style.display = "block";
+    return;
+  } finally {
+    if (loadOk) {
+      document.getElementById("spinner").style.display         = "none";
+      document.getElementById("careerForm").style.display      = "block";
+      document.getElementById("submitWrap").style.display      = "block";
+      document.getElementById("progressWrap").style.display    = "block";
+      document.getElementById("questionsHeader").style.display = "flex";
+    }
+  }
+};
 
-      // ⭐ 첫 문항 선택 시 이름 미입력이면 리마인더 표시
-      if (!document.getElementById('nameInput').value.trim()) {
-        document.getElementById('nameReminderBar').style.display = 'block';
-      } else {
-        document.getElementById('nameReminderBar').style.display = 'none';
+// ── 문항 렌더링 ───────────────────────────────────────────────
+function renderQuestions(data) {
+  questionData = data.filter(q => q.text && q.text.trim() !== "");
+  const form = document.getElementById("careerForm");
+  form.innerHTML = "";
+  questionData.forEach((q, i) => {
+    const div = document.createElement("div");
+    div.className = "question";
+    let choicesHtml = "";
+    for (let j = 1; j <= 5; j++) {
+      const label = q[`select${j}`];
+      const score = q[`score${j}`];
+      if (!label) continue;
+      choicesHtml += `<button type="button" class="btn-choice" onclick="selectAnswer('${q.id}',${score},this)">${label}</button>`;
+    }
+    div.innerHTML = `
+      <div class="q-meta">
+        <div class="q-num">${String(i+1).padStart(2,"0")}</div>
+        <div class="q-text">${q.text}</div>
+      </div>
+      <div class="q-choices">${choicesHtml}</div>`;
+    form.appendChild(div);
+  });
+}
+
+// ── 답변 선택 ─────────────────────────────────────────────────
+function selectAnswer(qid, score, btn) {
+  answers[qid] = score;
+  btn.closest(".q-choices").querySelectorAll(".btn-choice").forEach(b => b.classList.remove("selected"));
+  btn.classList.add("selected");
+  btn.closest(".question")?.classList.remove("unanswered");
+  const done  = Object.keys(answers).length;
+  const total = questionData.length || 60;
+  document.getElementById("progressFill").style.transform = `scaleX(${done/total})`;
+  document.getElementById("progressText").textContent = `${done} / ${total}`;
+  // 이름 미입력 안내
+  const reminder = document.getElementById("nameReminderBar");
+  if (!document.getElementById("nameInput").value.trim()) {
+    reminder.style.display = "block";
+  } else {
+    reminder.style.display = "none";
+  }
+}
+
+// ── 이름 검색 ─────────────────────────────────────────────────
+async function searchPrevious() {
+  const name = document.getElementById("nameInput").value.trim();
+  if (!name) return showWarning("searchWarningBox", "이름을 입력해주세요.");
+  const box = document.getElementById("searchResponse");
+  box.innerHTML = `<div style="font-size:13px;color:var(--ink2);padding:10px 0;">검색 중…</div>`;
+  try {
+    const data = await api("loadPreviousResult", { name });
+    lastSearchResult = data.found ? data.result : null;
+    if (data.found) {
+      box.innerHTML = `<div class="confirm-box">
+        <p>이전 검사 기록이 있습니다. 결과를 바로 보시겠습니까?</p>
+        <div class="confirm-btns">
+          <button class="btn-yes" onclick="confirmLoad(true)">예, 결과 보기</button>
+          <button class="btn-no"  onclick="confirmLoad(false)">새로 검사하기</button>
+        </div></div>`;
+    } else {
+      box.innerHTML = `<div class="confirm-box">
+        <p>기존 기록이 없습니다. 지금 바로 검사를 시작하시겠습니까?</p>
+        <div class="confirm-btns">
+          <button class="btn-yes" onclick="confirmLoad(true,true)">예, 시작하기</button>
+          <button class="btn-no"  onclick="confirmLoad(false)">취소</button>
+        </div></div>`;
+    }
+  } catch(e) {
+    box.innerHTML = `<div style="color:#e05252;font-size:13px;padding:10px 0;">오류: ${e.message}</div>`;
+  }
+}
+
+function confirmLoad(ok, isNew = false) {
+  document.getElementById("searchResponse").innerHTML = "";
+  if (ok && lastSearchResult) renderResult(lastSearchResult);
+  else if (!ok) location.reload();
+}
+
+// ── 답변 제출 ─────────────────────────────────────────────────
+async function submitAnswers() {
+  const name = document.getElementById("nameInput").value.trim();
+  if (!name) {
+    showWarning("answerWarningBox", "⚠️ 성함을 입력해주세요. 페이지 상단 이름 입력란을 채워주세요.");
+    document.getElementById("answerWarningBox").scrollIntoView({ behavior: "smooth", block: "center" });
+    return;
+  }
+  const unanswered = questionData.filter(q => answers[q.id] === undefined);
+  if (unanswered.length) {
+    // 기존 하이라이트 초기화
+    document.querySelectorAll(".question.unanswered").forEach(el => el.classList.remove("unanswered"));
+    // 미응답 번호 수집
+    const unansweredNums = unanswered.map(q => questionData.findIndex(qq => qq.id === q.id) + 1);
+    // 하이라이트
+    unanswered.forEach(q => {
+      const idx = questionData.findIndex(qq => qq.id === q.id);
+      const qEls = document.querySelectorAll(".question");
+      if (qEls[idx]) qEls[idx].classList.add("unanswered");
+    });
+    // 경고
+    const msg = unanswered.length === 1
+      ? `⚠️ ${unansweredNums[0]}번 문항이 선택되지 않았습니다.`
+      : `⚠️ ${unanswered.length}개 문항이 선택되지 않았습니다: ${unansweredNums.join(", ")}번`;
+    showWarning("answerWarningBox", msg);
+    // 첫 미응답으로 스크롤
+    const firstIdx = questionData.findIndex(qq => qq.id === unanswered[0].id);
+    const qEls = document.querySelectorAll(".question");
+    if (qEls[firstIdx]) qEls[firstIdx].scrollIntoView({ behavior: "smooth", block: "center" });
+    return;
+  }
+  document.getElementById("answerWarningBox").style.display = "none";
+  const btn = document.getElementById("submitBtn");
+  btn.disabled = true; btn.textContent = "분석 중…";
+  try {
+    const result = await api("saveAnswers", { name, answers });
+    renderResult(result);
+  } catch(e) {
+    alert("오류: " + e.message);
+    btn.disabled = false; btn.textContent = "결과 보기";
+  }
+}
+
+// ── 결과 렌더링 ───────────────────────────────────────────────
+function renderResult(result) {
+  if (!result || !result.firstType) { alert("결과 데이터가 없습니다."); return; }
+
+  ["careerForm","submitWrap","progressWrap","questionsHeader"].forEach(id => {
+    document.getElementById(id).style.display = "none";
+  });
+  document.querySelector(".intro-cards").style.display = "none";
+  document.querySelector(".name-section").style.display = "none";
+  document.getElementById("searchResponse").innerHTML = "";
+
+  const now = new Date();
+  document.getElementById("printDate").textContent =
+    `${now.getFullYear()}. ${now.getMonth()+1}. ${now.getDate()} 출력`;
+
+  // 상위 3개 유형
+  const top3 = [
+    { name: result.firstType,  score: result.firstScore,  rank: "1st" },
+    { name: result.secondType, score: result.secondScore, rank: "2nd" },
+    { name: result.thirdType,  score: result.thirdScore,  rank: "3rd" }
+  ];
+
+  document.getElementById("typesDisplay").innerHTML = top3.map((t, i) => `
+    ${i > 0 ? '<div class="result-divider"></div>' : ''}
+    <div class="type-badge">
+      <div class="type-rank">${t.rank}</div>
+      <div class="type-name${i===0?' rank1':''}">${t.name}</div>
+      <div class="type-score">${t.score}점</div>
+    </div>`).join("");
+
+  document.getElementById("resultSubtitle").textContent =
+    `${result.firstType} · ${result.secondType} · ${result.thirdType} 중심의 진로직업 성향`;
+
+  // 전체 점수 바
+  const typeScores = result.typeScores || {};
+  const sortedTypes = Object.entries(typeScores).sort((a,b) => b[1]-a[1]);
+  const maxScore = Math.max(...Object.values(typeScores), 1);
+  document.getElementById("scoreRows").innerHTML = sortedTypes.map(([type, score], i) => `
+    <div class="score-row${i===0?' rank1':''}">
+      <div class="score-type">${i<3?['①','②','③'][i]+' ':''}${type}</div>
+      <div><div class="score-bar-bg"><div class="score-bar-fill" style="width:${(score/maxScore)*100}%"></div></div></div>
+      <div class="score-val${i===0?' rank1':''}">${score}</div>
+    </div>`).join("");
+
+  // 차트
+  drawChart(sortedTypes);
+
+  // 상위 2개 유형 상세 설명
+  const fields = ["성향 요약","주요 성향","행동 특성","성격 특성","역할 스타일","성향 설명","주요 특질","직업적 특성","자기개발 팁","성장 팁"];
+  const desc = result.descriptions || {};
+  let fieldsHtml = "";
+  ["first","second"].forEach(key => {
+    const d = desc[key];
+    if (!d || !d.유형) return;
+    fieldsHtml += `<div class="field-section-title">${d.유형} 유형 상세</div>`;
+    fields.forEach(f => {
+      if (d[f]) fieldsHtml += `
+        <div class="field-row">
+          <div class="field-key">${f}</div>
+          <div class="field-val">${d[f]}</div>
+        </div>`;
+    });
+  });
+  document.getElementById("resultFields").innerHTML = fieldsHtml;
+
+  document.getElementById("resultSection").style.display = "block";
+  setTimeout(() => document.getElementById("resultSection").scrollIntoView({ behavior:"smooth" }), 100);
+}
+
+// ── 차트 ─────────────────────────────────────────────────────
+function drawChart(sortedTypes) {
+  if (chartInst) { chartInst.destroy(); chartInst = null; }
+  const labels = sortedTypes.map(([t]) => t);
+  const scores = sortedTypes.map(([,s]) => s);
+  const ctx = document.getElementById("careerChart").getContext("2d");
+  chartInst = new Chart(ctx, {
+    type: "bar",
+    data: {
+      labels,
+      datasets: [{
+        label: "점수",
+        data: scores,
+        backgroundColor: scores.map((_,i) => i===0?"rgba(184,144,58,0.9)":i<3?"rgba(212,170,90,0.7)":"rgba(212,170,90,0.35)"),
+        borderColor: scores.map((_,i) => i<3?"rgba(184,144,58,1)":"rgba(184,144,58,0.5)"),
+        borderWidth: 1,
+        barThickness: 28
+      }]
+    },
+    options: {
+      responsive: true,
+      plugins: {
+        legend: { display: false },
+        tooltip: { callbacks: { label: ctx => ` ${ctx.raw}점` }, titleFont:{family:"Noto Serif KR"}, bodyFont:{family:"Noto Serif KR"} }
+      },
+      scales: {
+        x: { grid:{color:"rgba(0,0,0,0.05)"}, ticks:{font:{family:"Noto Serif KR",size:11},color:"#4a4540"} },
+        y: { beginAtZero:true, grid:{color:"rgba(0,0,0,0.05)"}, ticks:{font:{family:"Noto Serif KR"},color:"#4a4540"} }
       }
     }
-
-    // 진행률 업데이트
-    function updateProgress() {
-      const answered = Object.keys(answers).length;
-      const total = questions.length;
-      const percent = answered / total;
-      
-      document.getElementById('progressFill').style.transform = `scaleX(${percent})`;
-      document.getElementById('progressText').textContent = `${answered} / ${total}`;
-    }
-
-    // 이전 결과 검색
-    async function searchPrevious() {
-      const name = document.getElementById('nameInput').value.trim();
-      if (!name) return showWarning('searchWarningBox', '이름을 입력해주세요.');
-
-      const box = document.getElementById('searchResponse');
-      box.innerHTML = '<div style="font-size:13px;color:var(--ink2);padding:10px 0;">검색 중…</div>';
-      
-      try {
-        const data = await api("searchResult", { name });
-        lastSearchResult = data.found ? data.result : null;
-        
-        if (data.found) {
-          box.innerHTML = `<div class="confirm-box">
-            <p>이전 검사 기록이 있습니다. 결과를 바로 보시겠습니까?</p>
-            <div class="confirm-btns">
-              <button class="btn-yes" onclick="confirmLoad(true)">예, 결과 보기</button>
-              <button class="btn-no" onclick="confirmLoad(false)">새로 검사하기</button>
-            </div>
-          </div>`;
-        } else {
-          box.innerHTML = `<div class="confirm-box">
-            <p>기존 기록이 없습니다. 지금 바로 검사를 시작하시겠습니까?</p>
-            <div class="confirm-btns">
-              <button class="btn-yes" onclick="confirmLoad(true, true)">예, 시작하기</button>
-              <button class="btn-no" onclick="confirmLoad(false)">취소</button>
-            </div>
-          </div>`;
-        }
-      } catch (e) {
-        box.innerHTML = `<div style="color:#e05252;font-size:13px;padding:10px 0;">오류: ${e.message}</div>`;
-      }
-    }
-
-    function confirmLoad(ok, isNew = false) {
-      document.getElementById('searchResponse').innerHTML = '';
-      if (ok && lastSearchResult) {
-        displayResult(lastSearchResult);
-      } else if (!ok) {
-        location.reload();
-      }
-    }
-
-    // 제출
-    async function submitAnswers() {
-      const name = document.getElementById('nameInput').value.trim();
-      
-      // ⭐ 1. 이름 미입력 체크
-      if (!name) {
-        showWarning('answerWarningBox', '⚠️ 성함을 입력해주세요. 페이지 상단 이름 입력란을 채워주세요.');
-        return;
-      }
-
-      // ⭐ 2. 미응답 문항 체크
-      const unanswered = questions.filter(q => !answers[q.id]);
-      if (unanswered.length) {
-        // 미응답 문항 하이라이트
-        document.querySelectorAll('.question').forEach(q => q.classList.remove('unanswered'));
-        unanswered.forEach(q => {
-          const elem = document.querySelector(`[data-qid="${q.id}"]`);
-          if (elem) elem.classList.add('unanswered');
-        });
-
-        showWarning('answerWarningBox', 
-          `⚠️ 아직 ${unanswered.length}개 문항이 응답되지 않았습니다. 모든 문항에 답해주세요.`);
-        
-        // 첫 번째 미응답 문항으로 스크롤
-        const firstUnanswered = document.querySelector('.question.unanswered');
-        if (firstUnanswered) {
-          firstUnanswered.scrollIntoView({ behavior: 'smooth', block: 'center' });
-        }
-        return;
-      }
-
-      // 제출
-      try {
-        const data = await api("submitAnswers", { name, answers });
-        displayResult(data.result);
-      } catch (e) {
-        alert("제출 실패: " + e.message);
-      }
-    }
-
-    // 결과 표시
-    function displayResult(result) {
-      // 문항 섹션 숨기기
-      document.getElementById('progressWrap').classList.remove('show');
-      document.getElementById('questionsHeader').classList.remove('show');
-      document.getElementById('questionsForm').style.display = 'none';
-      document.getElementById('submitWrap').classList.remove('show');
-
-      // 결과 섹션 표시
-      document.getElementById('resultName').textContent = result.name + '님의 결과';
-      document.getElementById('resultSection').classList.add('show');
-
-      // 차트
-      const ctx = document.getElementById('resultChart').getContext('2d');
-      if (chartInst) chartInst.destroy();
-      
-      chartInst = new Chart(ctx, {
-        type: 'radar',
-        data: {
-          labels: ['현실적 실용형', '논리적 분석형', '창의적 예술형', '인간 중심 사회형', '주도적 리더형', '체계적 규범형'],
-          datasets: [{
-            label: '점수',
-            data: [
-              result.typeScores['현실적 실용형'] || 0,
-              result.typeScores['논리적 분석형'] || 0,
-              result.typeScores['창의적 예술형'] || 0,
-              result.typeScores['인간 중심 사회형'] || 0,
-              result.typeScores['주도적 리더형'] || 0,
-              result.typeScores['체계적 규범형'] || 0
-            ],
-            backgroundColor: 'rgba(184, 144, 58, 0.2)',
-            borderColor: 'rgba(184, 144, 58, 1)',
-            borderWidth: 2
-          }]
-        },
-        options: {
-          scales: { r: { beginAtZero: true, max: 50 } },
-          plugins: { legend: { display: false } }
-        }
-      });
-
-      // 상위 3개 유형 표시
-      const list = document.getElementById('typeList');
-      list.innerHTML = '';
-      
-      const types = [
-        { name: result.firstType, score: result.firstScore, rank: 1 },
-        { name: result.secondType, score: result.secondScore, rank: 2 },
-        { name: result.thirdType, score: result.thirdScore, rank: 3 }
-      ];
-
-      types.forEach(t => {
-        const item = document.createElement('div');
-        item.className = 'type-item' + (t.rank === 1 ? ' top' : '');
-        item.innerHTML = `
-          <div class="type-item-header">
-            <div class="type-item-name">${t.rank}위 · ${t.name}</div>
-            <div class="type-item-score">${t.score}점</div>
-          </div>
-          <div class="type-item-desc">${result.descriptions[t.name] || ''}</div>
-        `;
-        list.appendChild(item);
-      });
-
-      // 결과로 스크롤
-      document.getElementById('resultSection').scrollIntoView({ behavior: 'smooth' });
-    }
-
-    // 관리자
-    let adminClickCount = 0;
-    function adminClick() {
-      adminClickCount++;
-      if (adminClickCount === 3) {
-        const pw = prompt('관리자 비밀번호');
-        if (pw) openAdmin(pw);
-        adminClickCount = 0;
-      }
-      setTimeout(() => adminClickCount = 0, 1500);
-    }
-
-    async function openAdmin(pw) {
-      try {
-        const data = await api("adminGetAll", { password: pw });
-        document.getElementById('adminModal').classList.add('show');
-        
-        const list = document.getElementById('adminList');
-        if (!data.results.length) {
-          list.innerHTML = '<p>결과가 없습니다.</p>';
-          return;
-        }
-
-        let html = '<table class="admin-table"><tr><th>이름</th><th>1위 유형</th><th>점수</th><th>시간</th><th>삭제</th></tr>';
-        data.results.forEach(r => {
-          const expired = r.expired ? ' expired' : '';
-          html += `<tr class="${expired}">
-            <td>${r.name}</td>
-            <td>${r.firstType}</td>
-            <td>${r.firstScore}</td>
-            <td>${r.timeStr}</td>
-            <td><button class="btn-delete" onclick="deleteResult('${r.id}', '${pw}')">삭제</button></td>
-          </tr>`;
-        });
-        html += '</table>';
-        list.innerHTML = html;
-      } catch (e) {
-        alert('인증 실패: ' + e.message);
-      }
-    }
-
-    function closeAdmin() {
-      document.getElementById('adminModal').classList.remove('show');
-    }
-
-    async function deleteResult(id, pw) {
-      if (!confirm('삭제하시겠습니까?')) return;
-      try {
-        await api("adminDelete", { password: pw, id });
-        alert('삭제되었습니다.');
-        openAdmin(pw);
-      } catch (e) {
-        alert('삭제 실패: ' + e.message);
-      }
-    }
-  </script>
+  });
+}
+</script>
 </body>
 </html>
